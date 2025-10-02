@@ -1,8 +1,8 @@
 console.log("Content File Loaded");
 
 browser.runtime.onMessage.addListener((message, _, __) => {
-  if (message.type === "LLM_REPLY") {
-    console.log("From Browser: " + message.content);
+  if (message.type === "LLM_STREAM_CHUNK") {
+    console.log("From Browser: " + "'" + message.content + "'");
   }
 
   return true;

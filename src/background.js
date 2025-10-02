@@ -6,16 +6,15 @@ browser.runtime.onMessage.addListener(async (message, sender, _) => {
   if (message.type === "TEXT_SELECTED") {
     console.log("From Tab: " + sender.tab.id + ", Message: " + message.content);
 
-    const llmReply = await invokeLLM(message.content);
-    sendMessage(sender.tab.id, llmReply);
+    await invokeLLM(sender.tab.id, message.content);
   }
 
   return true;
 });
 
-function sendMessage(currentTabId, content) {
-  browser.tabs.sendMessage(currentTabId, {
-    type: "LLM_REPLY",
+export function sendMessage(tabId, content) {
+  browser.tabs.sendMessage(tabId, {
+    type: "LLM_STREAM_CHUNK",
     content: content,
   });
 }

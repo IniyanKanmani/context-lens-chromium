@@ -1,6 +1,8 @@
+import { sendMessage } from "./background.js";
+
 console.log("LLM Caller Loaded");
 
-export async function invokeLLM(userSelectionContext) {
+export async function invokeLLM(tabId, userSelectionContext) {
   const API_KEY = "";
 
   const request = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -10,14 +12,15 @@ export async function invokeLLM(userSelectionContext) {
       Authorization: "Bearer " + API_KEY,
     },
     body: JSON.stringify({
-      model: "openai/gpt-oss-20b:free",
+      model: "z-ai/glm-4.5-air:free",
+      stream: true,
       messages: [
         {
           role: "system",
           content: [
             {
               type: "text",
-              text: "Explain the user what he asks for. **Important** kkep responses to less than 2 lines",
+              text: "Explain very concisely what the user asks for. **Important** keep responses to less than 2 lines",
             },
           ],
         },
@@ -34,13 +37,43 @@ export async function invokeLLM(userSelectionContext) {
     }),
   });
 
-  const response = await request.json();
+  const reader = request.body?.getReader();
+  if (!reader) {
+    throw new Error("Response body is not readable");
+  }
 
-  if (request.ok) {
-    const data = response.choices[0].message.content;
+  const decoder = new TextDecoder();
+  let buffer = "";
 
-    return data;
-  } else {
-    return false;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+
+      while (true) {
+        const lineEnd = buffer.indexOf("\n");
+        if (lineEnd === -1) break;
+
+        const line = buffer.slice(0, lineEnd).trim();
+        buffer = buffer.slice(lineEnd + 1);
+
+        if (line.startsWith("data: ")) {
+          const data = line.slice(6);
+          if (data === "[DONE]") break;
+
+          try {
+            const parsed = JSON.parse(data);
+            const content = parsed.choices[0].delta.content;
+            if (content) {
+              sendMessage(tabId, content);
+            }
+          } catch (e) {}
+        }
+      }
+    }
+  } finally {
+    reader.cancel();
   }
 }
