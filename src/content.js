@@ -1,7 +1,7 @@
 console.log("Content File Loaded");
 
 browser.runtime.onMessage.addListener((message, _, __) => {
-  if (message.type === "BROWSER_REPLY") {
+  if (message.type === "LLM_REPLY") {
     console.log("From Browser: " + message.content);
   }
 
@@ -20,8 +20,6 @@ document.addEventListener("keydown", (event) => {
     selected_text = document.getSelection();
 
     if (selected_text && selected_text.toString() !== "") {
-      console.log("DOM Selection: " + selected_text);
-
       sendMessage(selected_text.toString());
     }
   }

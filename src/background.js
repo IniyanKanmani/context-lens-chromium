@@ -1,21 +1,21 @@
+import { invokeLLM } from "./llm_caller.js";
+
 console.log("Background File Loaded");
 
-var currentTabId = null;
-
-browser.runtime.onMessage.addListener((message, sender, _) => {
+browser.runtime.onMessage.addListener(async (message, sender, _) => {
   if (message.type === "TEXT_SELECTED") {
     console.log("From Tab: " + sender.tab.id + ", Message: " + message.content);
 
-    currentTabId = sender.tab.id;
-    sendMessage(message.content);
+    const llmReply = await invokeLLM(message.content);
+    sendMessage(sender.tab.id, llmReply);
   }
 
   return true;
 });
 
-async function sendMessage(content) {
+function sendMessage(currentTabId, content) {
   browser.tabs.sendMessage(currentTabId, {
-    type: "BROWSER_REPLY",
+    type: "LLM_REPLY",
     content: content,
   });
 }
