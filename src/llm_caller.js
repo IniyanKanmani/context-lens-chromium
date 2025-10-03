@@ -4,9 +4,10 @@ import { sendMessage } from "./background.js";
 
 console.log("LLM File Loaded");
 
-export async function invokeLLM(tabId, popupId, userSelectionContext) {
-  const OPENROUTER_API_KEY = await getEnv("OPENROUTER_API_KEY");
+const OPENROUTER_API_KEY = await getEnv("OPENROUTER_API_KEY");
+const OPENROUTER_MODEL = await getEnv("OPENROUTER_MODEL");
 
+export async function invokeLLM(tabId, popupId, userSelectionContext) {
   const request = await fetch("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -14,7 +15,7 @@ export async function invokeLLM(tabId, popupId, userSelectionContext) {
       Authorization: "Bearer " + OPENROUTER_API_KEY,
     },
     body: JSON.stringify({
-      model: "z-ai/glm-4.5-air:free",
+      model: OPENROUTER_MODEL,
       stream: true,
       messages: [
         {
