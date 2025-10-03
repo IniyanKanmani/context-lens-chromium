@@ -13,39 +13,46 @@ function createPopup(popupId, rect) {
   popup.className = "context-lens-popup";
   popup.id = `popup-${popupId}`;
 
+  let noPageVSpace = false;
+
+  // Vertical Calculation
   let top;
   const estimatedHeight = 85;
   const spaceAbove = rect.top;
+  const spaceBetweenV = rect.bottom - rect.top;
   const spaceBelow = window.innerHeight - rect.bottom;
 
   if (spaceBelow >= estimatedHeight) {
     top = rect.bottom + 5;
   } else if (spaceAbove >= estimatedHeight) {
     top = rect.top - estimatedHeight - 5;
-  } else {
-    if (spaceBelow > spaceAbove) {
-      top = rect.bottom + 5;
-    } else {
-      top = rect.top - estimatedHeight - 5;
-    }
+  } else if (spaceBetweenV >= estimatedHeight) {
+    top = rect.bottom - estimatedHeight - 5;
+    noPageVSpace = true;
   }
 
   if (top <= 0) top = 5;
   if (top + estimatedHeight >= window.innerHeight)
     top = window.innerHeight - estimatedHeight - 5;
 
+  top += window.scrollY;
+  popup.style.top = top + "px";
+
+  // Horizontal Calculation
   let left;
   const estimatedWidth = 405;
   const spaceLeft = rect.left;
-  const spaceBetween = rect.right - rect.left;
+  const spaceBetweenH = rect.right - rect.left;
   const spaceRight = window.innerWidth - rect.right;
 
-  if (spaceBetween >= estimatedWidth) {
+  if (noPageVSpace) {
+    left = rect.right - estimatedWidth - 5;
+  } else if (spaceBetweenH >= estimatedWidth) {
     left = rect.left;
-  } else if (spaceBetween + spaceRight >= estimatedWidth) {
+  } else if (spaceBetweenH + spaceRight >= estimatedWidth) {
     left = rect.left;
   } else if (spaceLeft >= estimatedWidth) {
-    left = rect.left - estimatedWidth + spaceBetween + spaceRight - 5; // window.innerWidth - estimatedWidth
+    left = window.innerWidth - estimatedWidth - 5;
   }
 
   if (left <= 0) left = 5;
@@ -53,10 +60,7 @@ function createPopup(popupId, rect) {
     left = window.innerWidth - estimatedWidth - 5;
 
   left += window.scrollX;
-  top += window.scrollY;
-
   popup.style.left = left + "px";
-  popup.style.top = top + "px";
 
   popup.classList.add("loading");
   document.body.appendChild(popup);
@@ -71,19 +75,22 @@ function createPopup(popupId, rect) {
 
 function updatePopupContent(popupId, content) {
   const popupData = popups.get(popupId);
-  if (popupData) {
-    if (!popupData.hasReceivedFirstToken) {
-      if (content !== "\n") {
-        popupData.element.classList.remove("loading");
-        popupData.hasReceivedFirstToken = true;
-        popupData.content += content;
-        popupData.element.textContent = popupData.content;
-      }
-    } else {
-      popupData.content += content;
-      popupData.element.textContent = popupData.content;
-    }
+
+  if (!popupData) {
+    return;
   }
+
+  if (!popupData.hasReceivedFirstToken && content.includes("\n")) {
+    return;
+  }
+
+  if (!popupData.hasReceivedFirstToken) {
+    popupData.element.classList.remove("loading");
+    popupData.hasReceivedFirstToken = true;
+  }
+
+  popupData.content += content;
+  popupData.element.textContent = popupData.content;
 }
 
 function removeBranchPopups(popupId) {

@@ -24,7 +24,7 @@ document.addEventListener("keydown", (event) => {
   } else if (event.key === "Escape") removeAllPopups();
 });
 
-document.addEventListener("click", (event) => {
+document.addEventListener("mousedown", (event) => {
   const clickedElement = event.target;
   const isInsidePopup = clickedElement.closest(".context-lens-popup");
   const elementId = clickedElement.id;
