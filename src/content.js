@@ -1,6 +1,7 @@
 browser.runtime.onMessage.addListener((message, _, __) => {
   if (message.type === "LLM_STREAM_CHUNK") {
     updatePopupContent(message.popupId, message.content);
+  } else if (message.type === "LLM_STREAM_CLOSED") {
   }
 
   return true;
@@ -17,7 +18,7 @@ document.addEventListener("keydown", (event) => {
       const popupId = ++popupCounter;
       createPopup(popupId, rect);
 
-      sendMessage(popupId, selection.toString().trim());
+      sendMessage("TEXT_MARKED", popupId, selection.toString().trim());
     }
   } else if (event.key === "Escape") removeAllPopups();
 });
@@ -35,9 +36,9 @@ document.addEventListener("mousedown", (event) => {
   }
 });
 
-function sendMessage(popupId, content) {
+function sendMessage(type, popupId, content) {
   browser.runtime.sendMessage({
-    type: "TEXT_SELECTED",
+    type: type,
     popupId: popupId,
     content: content,
   });

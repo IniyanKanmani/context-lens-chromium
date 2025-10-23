@@ -2,8 +2,6 @@ import { getEnv } from "./get_env.js";
 import { systemPrompt } from "./prompt.js";
 import { sendMessage } from "./background.js";
 
-console.log("LLM File Loaded");
-
 const OPENROUTER_API_KEY = await getEnv("OPENROUTER_API_KEY");
 const OPENROUTER_MODEL = await getEnv("OPENROUTER_MODEL");
 
@@ -80,13 +78,14 @@ async function processStream(tabId, popupId, body) {
             const parsed = JSON.parse(data);
             const content = parsed.choices[0].delta.content;
             if (content) {
-              sendMessage(tabId, popupId, content);
+              sendMessage("LLM_STREAM_CHUNK", tabId, popupId, content);
             }
           } catch (e) {}
         }
       }
     }
   } finally {
+    sendMessage("LLM_STREAM_CLOSED", tabId, popupId, null);
     reader.cancel();
   }
 }
