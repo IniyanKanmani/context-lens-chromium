@@ -1,6 +1,6 @@
-# ContextLens-Firefox
+# ContextLens-Chromium
 
-**ContextLens** is a Firefox Addon designed to bring contextual AI assistance directly to your browser.
+**ContextLens** is a Chrome Extension designed to bring contextual AI assistance directly to your browser.
 
 Simply highlight any text on a webpage, use the keyboard shortcut (default: Alt+Shift), and ContextLens will display a insightful reply, helping you understand or summarize on the highlighted content without leaving your current tab in a popup.
 
@@ -24,11 +24,11 @@ Simply highlight any text on a webpage, use the keyboard shortcut (default: Alt+
    OPENROUTER_MODEL=your_model_name_here
    ```
    For example, you can use `openai/gpt-oss-20b:free` or any other model available on OpenRouter.
-5. Load the extension temporarily in Firefox:
-   - Open Firefox and go to `about:debugging`.
-   - Click "This Firefox" in the left sidebar.
-   - Click "Load Temporary Add-on".
-   - Select the `manifest.json` file from the project root.
+5. Load the extension temporarily in Chrome:
+   - Open Chrome and go to `chrome://extensions/`.
+   - Enable "Developer mode" in the top right.
+   - Click "Load unpacked".
+   - Select the project directory.
 
 ## Privacy
 
@@ -44,4 +44,4 @@ This extension sends highlighted text to [OpenRouter](https://openrouter.ai) for
 
 ### Reporting Issues
 
-If you encounter any bugs or have feature requests, please create an issue on our [GitHub repository](https://github.com/IniyanKanmani/context-lens-firefox/issues).
+If you encounter any bugs or have feature requests, please create an issue on our [GitHub repository](https://github.com/IniyanKanmani/context-lens-chromium/issues).

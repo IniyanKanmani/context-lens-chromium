@@ -2,7 +2,7 @@
 
 **Last Updated: October 25, 2025**
 
-Context Lens ("we", "us", or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our Firefox extension.
+ Context Lens ("we", "us", or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our Chrome extension.
 
 ## Information We Collect
 
