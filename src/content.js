@@ -1,4 +1,4 @@
-browser.runtime.onMessage.addListener((message, _, __) => {
+chrome.runtime.onMessage.addListener((message, _, __) => {
   if (message.type === "LLM_STREAM_CHUNK") {
     updatePopupContent(message.popupId, message.content);
   } else if (message.type === "LLM_STREAM_CLOSED") {
@@ -35,7 +35,7 @@ document.addEventListener("mousedown", (event) => {
 });
 
 function sendMessage(type, popupId, content) {
-  browser.runtime.sendMessage({
+  chrome.runtime.sendMessage({
     type: type,
     popupId: popupId,
     content: content,

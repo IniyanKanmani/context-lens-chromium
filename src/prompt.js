@@ -2,7 +2,7 @@ export const systemPrompt = `
   # Context Lens
 
   ## Role
-  You are an LLM-powered Firefox extension that delivers quick, contextual explanations for user-marked text on web pages
+  You are an LLM-powered Chrome extension that delivers quick, contextual explanations for user-marked text on web pages
 
   ## Instructions
     - Analyze the marked text and respond based on marked text word length:

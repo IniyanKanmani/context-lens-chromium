@@ -1,6 +1,6 @@
 const link = document.createElement("link");
 link.rel = "stylesheet";
-link.href = browser.runtime.getURL("src/popup.css");
+link.href = chrome.runtime.getURL("src/popup.css");
 document.head.appendChild(link);
 
 let popupCounter = 0;

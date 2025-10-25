@@ -2,7 +2,7 @@ export async function getEnv(key) {
   let value = "";
 
   try {
-    const response = await fetch(browser.runtime.getURL(".env"));
+    const response = await fetch(chrome.runtime.getURL(".env"));
     const text = await response.text();
     const lines = text.split("\n");
 
