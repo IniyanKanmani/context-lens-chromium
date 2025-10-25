@@ -4,8 +4,6 @@ browser.runtime.onMessage.addListener(async (message, sender, _) => {
   if (message.type === "TEXT_MARKED") {
     await invokeLLM(sender.tab.id, message.popupId, message.content);
   }
-
-  return true;
 });
 
 export function sendMessage(type, tabId, popupId, content) {

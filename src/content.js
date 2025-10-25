@@ -3,8 +3,6 @@ browser.runtime.onMessage.addListener((message, _, __) => {
     updatePopupContent(message.popupId, message.content);
   } else if (message.type === "LLM_STREAM_CLOSED") {
   }
-
-  return true;
 });
 
 document.addEventListener("keydown", (event) => {

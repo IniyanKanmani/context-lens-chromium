@@ -2,10 +2,19 @@ import { getEnv } from "./get_env.js";
 import { systemPrompt } from "./prompt.js";
 import { sendMessage } from "./background.js";
 
-const OPENROUTER_API_KEY = await getEnv("OPENROUTER_API_KEY");
-const OPENROUTER_MODEL = await getEnv("OPENROUTER_MODEL");
+let OPENROUTER_API_KEY;
+let OPENROUTER_MODEL;
+
+async function loadenv() {
+  OPENROUTER_API_KEY = await getEnv("OPENROUTER_API_KEY");
+  OPENROUTER_MODEL = await getEnv("OPENROUTER_MODEL");
+}
 
 export async function invokeLLM(tabId, popupId, userSelectionContext) {
+  if (OPENROUTER_API_KEY === undefined || OPENROUTER_MODEL === undefined) {
+    await loadenv();
+  }
+
   const request = await fetch("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",
     headers: {
