@@ -1,7 +1,9 @@
 let isProcessingRequest = false;
 
 chrome.runtime.onMessage.addListener((message, _, __) => {
-  if (message.type === "SER_LLM_REQUEST_SUCCESS") {
+  if (message.type === "SER_TEXT_GEN_KEY_TRIGGERED") {
+    handleTextGenTrigger();
+  } else if (message.type === "SER_LLM_REQUEST_SUCCESS") {
     handleLLMRequestSuccess(message.popupId);
   } else if (message.type === "SER_LLM_REQUEST_FAILURE") {
     handleLLMRequestFailure(message.popupId);
@@ -18,20 +20,7 @@ chrome.runtime.onMessage.addListener((message, _, __) => {
 });
 
 document.addEventListener("keydown", (event) => {
-  if (!isProcessingRequest && event.shiftKey && event.altKey) {
-    const selection = document.getSelection();
-
-    if (selection && selection.toString().trim() !== "") {
-      const range = selection.getRangeAt(0);
-      const rect = range.getBoundingClientRect();
-
-      const popupId = ++popupCounter;
-      createPopup(popupId, rect);
-
-      isProcessingRequest = true;
-      sendMessage("WEB_TEXT_MARKED", popupId, selection.toString().trim());
-    }
-  } else if (event.key === "Escape") {
+  if (event.key === "Escape") {
     if (isProcessingRequest) {
       sendMessage("WEB_CANCEL_STREAM", popupCounter, null);
     } else {
@@ -47,11 +36,30 @@ document.addEventListener("mousedown", (event) => {
 
   if (!isInsidePopup) {
     removeAllPopups();
+    isProcessingRequest = false;
   } else if (elementId.startsWith("popup-")) {
     const popupId = parseInt(elementId.split("-")[1]);
     removeBranchPopups(popupId);
+    isProcessingRequest = false;
   }
 });
+
+function handleTextGenTrigger() {
+  if (!isProcessingRequest) {
+    const textSelection = document.getSelection();
+
+    if (textSelection && textSelection.toString().trim() !== "") {
+      const range = textSelection.getRangeAt(0);
+      const rect = range.getBoundingClientRect();
+
+      const popupId = ++popupCounter;
+      createPopup(popupId, rect);
+
+      isProcessingRequest = true;
+      sendMessage("WEB_TEXT_GEN", popupId, textSelection.toString().trim());
+    }
+  }
+}
 
 function sendMessage(type, popupId, content) {
   chrome.runtime.sendMessage({

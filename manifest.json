@@ -25,5 +25,13 @@
       "matches": ["*://*/*"],
       "resources": ["src/popup.css"]
     }
-  ]
+  ],
+  "commands": {
+    "text-generation": {
+      "suggested_key": {
+        "default": "Shift+Alt+G"
+      },
+      "description": "Text Generation"
+    }
+  }
 }
