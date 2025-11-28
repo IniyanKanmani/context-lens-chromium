@@ -36,11 +36,11 @@ chrome.commands.onCommand.addListener(async (command) => {
     chrome.tabs.sendMessage(tabId, {
       type: "SER_CONTEXTUAL_EXPLAIN_KEY_TRIGGERED",
     });
-  } else if (command === "visual-explain") {
+  } else if (command === "image-explain") {
     const imageUri = await chrome.tabs.captureVisibleTab();
 
     chrome.tabs.sendMessage(tabId, {
-      type: "SER_VISUAL_EXPLAIN_KEY_TRIGGERED",
+      type: "SER_IMAGE_EXPLAIN_KEY_TRIGGERED",
       imageUri: imageUri,
     });
   }
