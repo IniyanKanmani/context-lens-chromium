@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Context Lens",
-  "version": "0.2",
-  "description": "Chromium extension for AI-powered contextual text explanations. Just select text, hit keybind and get insights on popup in same tab",
+  "version": "0.3",
+  "description": "Chromium extension for AI-powered explanations. Just select text or image, hit keybind and get insights in a popup on the same tab",
   "author": "Iniyan Kanmani",
   "homepage_url": "https://github.com/IniyanKanmani/context-lens-chromium",
   "icons": {
