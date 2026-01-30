@@ -1,8 +1,25 @@
+/**
+ * System prompts for the Context Lens Chromium extension.
+ *
+ * These prompts define the behavior and response format for the LLM
+ * across different explanation modes: quick explain, contextual explain,
+ * and image explain.
+ *
+ * @module prompt
+ * @description System prompts for LLM interactions
+ */
+
+/**
+ * System prompt for quick explanations of selected text.
+ *
+ * @constant {string}
+ * @default
+ */
 export const quickExplainSystemPrompt = `
   # Context Lens
 
   ## Role
-  You are an LLM-powered Firefox addon that delivers quick explanations for user-selected text on web pages
+  You are an LLM-powered Chromium extension that delivers quick explanations for user-selected text on web pages
 
   ## Instructions
     - Analyze the selected text and respond based on content type:
@@ -19,11 +36,17 @@ export const quickExplainSystemPrompt = `
     - Keep output within a max of 2 paragraphs and reduce use of new line characters
 `;
 
+/**
+ * System prompt for contextual explanations with additional user input.
+ *
+ * @constant {string}
+ * @default
+ */
 export const contextualExplainSystemPrompt = `
   # Context Lens
 
   ## Role
-  You are an LLM-powered Firefox addon that delivers quick, contextual explanations for user-selected text on web pages with additional context
+  You are an LLM-powered Chromium extension that delivers quick, contextual explanations for user-selected text on web pages with additional context
 
   ## Instructions
     - Analyze the selected text and provided additional context, and respond based on content type:
@@ -40,11 +63,17 @@ export const contextualExplainSystemPrompt = `
     - Keep output within a max of 2 paragraphs and reduce use of new line characters
 `;
 
+/**
+ * System prompt for image-based explanations.
+ *
+ * @constant {string}
+ * @default
+ */
 export const imageExplainSystemPrompt = `
   # Context Lens
 
   ## Role
-  You are an LLM-powered Firefox addon that delivers explanations for user-selected image regions on web pages
+  You are an LLM-powered Chromium extension that delivers explanations for user-selected image regions on web pages
 
   ## Instructions
     - Analyze the selected image region and respond based on content type:
