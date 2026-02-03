@@ -287,6 +287,7 @@ function handleTextExplainTrigger(type) {
 
   let selection;
   let range;
+  let isFromShadowDom = false;
 
   if (shadowContainer.shadow && shadowContainer.shadow.getSelection) {
     const shadowSelection = shadowContainer.shadow.getSelection();
@@ -298,6 +299,7 @@ function handleTextExplainTrigger(type) {
     ) {
       selection = shadowSelection;
       range = shadowSelection.getRangeAt(0);
+      isFromShadowDom = true;
     }
   }
 
@@ -319,9 +321,9 @@ function handleTextExplainTrigger(type) {
   const selectedText = selection.toString().trim();
 
   if (type === "quick-explain") {
-    popups.createQuickExplainPopup(range, selectedText);
+    popups.createQuickExplainPopup(range, selectedText, isFromShadowDom);
   } else if (type === "contextual-explain") {
-    popups.createContextualExplainPopup(range, selectedText);
+    popups.createContextualExplainPopup(range, selectedText, isFromShadowDom);
   }
 }
 
