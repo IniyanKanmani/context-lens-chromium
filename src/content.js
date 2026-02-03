@@ -285,13 +285,37 @@ function handleTextExplainTrigger(type) {
     return;
   }
 
-  const selection = window.getSelection();
+  let selection;
+  let range;
 
-  if (!selection || selection.toString().trim() === "") {
-    return;
+  if (shadowContainer.shadow && shadowContainer.shadow.getSelection) {
+    const shadowSelection = shadowContainer.shadow.getSelection();
+
+    if (
+      shadowSelection &&
+      shadowSelection.toString().trim() !== "" &&
+      shadowSelection.rangeCount > 0
+    ) {
+      selection = shadowSelection;
+      range = shadowSelection.getRangeAt(0);
+    }
   }
 
-  const range = selection.getRangeAt(0);
+  if (!range) {
+    const realSelection = window.getSelection();
+
+    if (
+      !realSelection ||
+      realSelection.toString().trim() === "" ||
+      realSelection.rangeCount === 0
+    ) {
+      return;
+    }
+
+    selection = realSelection;
+    range = selection.getRangeAt(0);
+  }
+
   const selectedText = selection.toString().trim();
 
   if (type === "quick-explain") {
