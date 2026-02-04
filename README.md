@@ -4,6 +4,10 @@
 
 Simply highlight any text on a webpage, use Shift+Alt+E for instant explanation or Shift+Alt+C for contextual explanation with additional input, or use Shift+Alt+I for image inference capabilities, and ContextLens will display an insightful reply, helping you understand or summarize the highlighted content without leaving your current tab in a popup.
 
+## Demo
+
+https://github.com/user-attachments/assets/9e4504ce-904b-45f4-8afd-161d39d1c66f
+
 ## Usage
 
 - Highlight text on any webpage.
